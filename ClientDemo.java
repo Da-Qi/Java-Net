@@ -1,38 +1,36 @@
-package Net_07;
+package Net_08;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 /*
- * 客户端键盘录入，服务器输出文本文件
+ * 客户端文本文件，服务器输出到控制台
  */
 public class ClientDemo {
 	public static void main(String[] args) throws IOException {
-		//创建客户端Socket对象
-		Socket s = new Socket("192.168.1.3",23456);
+		//封装Socket对象
+		Socket s =new Socket("192.168.1.3",13757);
 		
-		//封装键盘录入
+		//封装文本文件读入
 		BufferedReader br = new BufferedReader(
-				new InputStreamReader(System.in));
-		//封装通道内的数据
+				new FileReader("a.txt"));
+		
+		//封装通道流数据
 		BufferedWriter bw = new BufferedWriter(
 				new OutputStreamWriter(s.getOutputStream()));
 		
 		String line = null;
-		while((line = br.readLine())!=null){
-			if("over".equals(line)) {
-				break;
-			}
+		while((line = br.readLine())!= null) {
 			bw.write(line);
 			bw.newLine();
 			bw.flush();
 		}
 		
 		s.close();
+		br.close();
 	}
-
 }
